@@ -240,5 +240,5 @@ class Map_Obj():
         image.show()
 
 map_obj = Map_Obj()
-map = map_obj.read_map("./Samfundet_map_1.csv")
-map_obj.print_map(map)
+the_map = map_obj.read_map("./Samfundet_map_1.csv")
+map_obj.show_map(map_obj.print_map(the_map))
