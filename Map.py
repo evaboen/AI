@@ -242,4 +242,3 @@ class Map_Obj():
 map_obj = Map_Obj()
 map = map_obj.read_map("./Samfundet_map_1.csv")
 map_obj.print_map(map)
-map_obj.show_map(map)
