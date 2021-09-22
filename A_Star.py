@@ -1,7 +1,7 @@
 import Map
 
 global_map = Map.Map_Obj()
-
+the_map = global_map.read_map("./Samfundet_map_1.csv")
 
 class Node:
     def __init__(self, x, y, goal, parent=None):
@@ -53,36 +53,36 @@ class A_Star:
         return node.g + self.heuristic(node)
 
     def BFS(self, map):
+        ind = 10
         start_node = Node(global_map.get_start_pos()[0], global_map.get_start_pos()[1], global_map.get_goal_pos())
         if map.get_goal_pos() == start_node.pos:
             return start_node
         frontier = [start_node]
         reached = [start_node.pos]
         while len(frontier) != 0:
-
-            print(reached)
             current_node = frontier.pop()
-            print(current_node.pos)
+
             for child in self.expand(current_node, map):
                 print(f'noden vi er i:{current_node.pos}, og barnet: {child.pos}')
                 s = child.pos
-                if map.get_goal_pos == s:
-                    result = []
+                if global_map.get_goal_pos() == s:
+                    result = [s]
                     parent = child.parent
-                    while parent.pos != map.get_goal_pos():
-                        result.append(parent)
+                    while parent.pos != global_map.get_start_pos():
+                        global_map.set_cell_value(parent.pos, ind)
+                        ind += 1
+                        result.append(parent.pos)
                         parent = parent.parent
+                    global_map.show_map(global_map.print_map(the_map))
                     return result
                 if s not in reached:
                     reached.append(s)
                     frontier.append(child)
 
-        print(reached)
 
 
     def expand(self, node:Node, map):
         result = []
-        print(node.pos)
         for child in node.get_children():
             next_node = Node(child[0], child[1], map.get_goal_pos(), node)
             result.append(next_node)
@@ -92,9 +92,10 @@ class A_Star:
 
 n = Node(global_map.get_start_pos()[0], global_map.get_start_pos()[1], global_map.get_goal_pos())
 a_Star = A_Star()
+print(a_Star.BFS(global_map))
 n_p = Node(30,20, global_map.get_goal_pos())
 n2 = Node(30, 21, global_map.get_goal_pos())
-print(n2.get_children())
+
 
 """
 for node in a_Star.expand(n,a_Star.map):

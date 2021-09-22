@@ -48,7 +48,7 @@ class Map_Obj():
         """
         if task == 1:
             start_pos = [27, 18]
-            goal_pos = [40, 32]
+            goal_pos = [27, 33]
             end_goal_pos = goal_pos
             path_to_map = 'Samfundet_map_1.csv'
         elif task == 2:
