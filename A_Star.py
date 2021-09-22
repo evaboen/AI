@@ -8,7 +8,7 @@ class Node:
         self.pos = [x, y]
         self.parent = parent
         if parent is not None:
-            self.g = parent.get_g() + 1
+            self.g = parent.get_g() + global_map.get_cell_value([x,y])
         else:
             self.g = 0
         self.h = abs(self.pos[0] - goal[0]) + abs(self.pos[1] - goal[1])
@@ -24,7 +24,7 @@ class Node:
         children.append([self.pos[0], self.pos[1] - 1])
         result = []
         for node in children:
-            if global_map.get_cell_value(node) == 1:
+            if global_map.get_cell_value(node) in [1,2,3,4]:
                 if self.parent is not None:
                     if self.parent.pos != node:
                         result.append(node)
@@ -63,7 +63,7 @@ class A_Star:
             current_node = frontier.pop()
 
             for child in self.expand(current_node, map):
-                print(f'noden vi er i:{current_node.pos}, og barnet: {child.pos}')
+
                 s = child.pos
                 if global_map.get_goal_pos() == s:
                     result = [s]
@@ -78,6 +78,7 @@ class A_Star:
                 if s not in reached:
                     reached.append(s)
                     frontier.append(child)
+                    frontier.sort(key=lambda x:self.f(x), reverse=True)
 
 
 

@@ -8,7 +8,7 @@ from PIL import Image
 
 
 class Map_Obj():
-    def __init__(self, task=1):
+    def __init__(self, task=4):
         self.start_pos, self.goal_pos, self.end_goal_pos, self.path_to_map = self.fill_critical_positions(
             task)
         self.int_map, self.str_map = self.read_map(self.path_to_map)
@@ -48,7 +48,7 @@ class Map_Obj():
         """
         if task == 1:
             start_pos = [27, 18]
-            goal_pos = [27, 33]
+            goal_pos = [40, 32]
             end_goal_pos = goal_pos
             path_to_map = 'Samfundet_map_1.csv'
         elif task == 2:
@@ -241,5 +241,5 @@ class Map_Obj():
 
 
 map_obj = Map_Obj()
-the_map = map_obj.read_map("./Samfundet_map_1.csv")
+the_map = map_obj.read_map("./Samfundet_map_2.csv")
 map_obj.show_map(map_obj.print_map(the_map))
