@@ -18,20 +18,22 @@ class Node:
 
     def get_children(self):
         children = []
-        if self.parent is None:
-            for x in range(-1, 2, 2):
-                for y in range(-1, 2, 2):
+        children.append([self.pos[0] + 1, self.pos[1]])
+        children.append([self.pos[0] - 1, self.pos[1]])
+        children.append([self.pos[0], self.pos[1] + 1])
+        children.append([self.pos[0], self.pos[1] - 1])
+        result = []
+        for node in children:
+            if global_map.get_cell_value(node) == 1:
+                if self.parent is not None:
+                    if self.parent.pos != node:
+                        result.append(node)
+                else:
+                    result.append(node)
+        return result
 
-                    c_pos = [self.pos[0] + x, self.pos[1] + y]
-                    if global_map.get_cell_value(c_pos) == 1:
-                        children.append(c_pos)
-        else:
-            for x in range(-1, 2, 2):
-                for y in range(-1, 2, 2):
-                    c_pos = [self.pos[0] + x, self.pos[1] + y]
-                    if global_map.get_cell_value(c_pos) == 1:
-                        children.append(c_pos)
-        return children
+
+
 
 
 
@@ -47,18 +49,20 @@ class A_Star:
         current_pos = node.pos
         return abs(goal[0] - current_pos[0]) + abs(goal[1] - current_pos[1])
 
-    def f(self):
-        return 1
+    def f(self, node):
+        return node.g + self.heuristic(node)
 
     def BFS(self, map):
-
         start_node = Node(global_map.get_start_pos()[0], global_map.get_start_pos()[1], global_map.get_goal_pos())
-        if map.get_goal_pos() == start_node:
+        if map.get_goal_pos() == start_node.pos:
             return start_node
         frontier = [start_node]
         reached = [start_node.pos]
         while len(frontier) != 0:
+
+            print(reached)
             current_node = frontier.pop()
+            print(current_node.pos)
             for child in self.expand(current_node, map):
                 print(f'noden vi er i:{current_node.pos}, og barnet: {child.pos}')
                 s = child.pos
@@ -72,13 +76,13 @@ class A_Star:
                 if s not in reached:
                     reached.append(s)
                     frontier.append(child)
-        print(frontier)
+
         print(reached)
 
 
-    def expand(self, node, map):
-        s = node.pos
+    def expand(self, node:Node, map):
         result = []
+        print(node.pos)
         for child in node.get_children():
             next_node = Node(child[0], child[1], map.get_goal_pos(), node)
             result.append(next_node)
@@ -88,7 +92,9 @@ class A_Star:
 
 n = Node(global_map.get_start_pos()[0], global_map.get_start_pos()[1], global_map.get_goal_pos())
 a_Star = A_Star()
-print(a_Star.BFS(global_map))
+n_p = Node(30,20, global_map.get_goal_pos())
+n2 = Node(30, 21, global_map.get_goal_pos())
+print(n2.get_children())
 
 """
 for node in a_Star.expand(n,a_Star.map):
