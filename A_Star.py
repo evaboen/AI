@@ -17,6 +17,7 @@ class Node:
         return self.g
 
     def get_children(self):
+        """Function for finding the children to a node. Returns a list with all the nodes that is not a wall or the current nodes parent"""
         children = []
         children.append([self.pos[0] + 1, self.pos[1]])
         children.append([self.pos[0] - 1, self.pos[1]])
@@ -45,26 +46,32 @@ class A_Star:
         self.current_pos = self.map.get_start_pos()
 
     def heuristic(self, node):
+        """Calculates the weigth from a node to the goal"""
         goal = self.map.get_goal_pos()
         current_pos = node.pos
         return abs(goal[0] - current_pos[0]) + abs(goal[1] - current_pos[1])
 
     def f(self, node):
+        """"Returns the sum og the heristics and the weigth of tha traveled distance"""
         return node.g + self.heuristic(node)
 
     def BFS(self, map):
+        """Func for finding tha shortest path. ind is the color we use to draw the road taken."""
         ind = 10
         start_node = Node(global_map.get_start_pos()[0], global_map.get_start_pos()[1], global_map.get_goal_pos())
+        """If the start node is the goal node we return the start node"""
         if map.get_goal_pos() == start_node.pos:
             return start_node
+        """Frontier is a list with all the nodes that has yet to be expolred. It is sorted by the function f on each node in the list"""
         frontier = [start_node]
+        """Reached is a list with all the coordinates to already discovered nodes. It is used to not visit the same node twice"""
         reached = [start_node.pos]
         while len(frontier) != 0:
             current_node = frontier.pop()
 
             for child in self.expand(current_node, map):
-
                 s = child.pos
+                """if child is the goal we add all the parents to the result until we reach the starting node. we then paint the result yellow"""
                 if global_map.get_goal_pos() == s:
                     result = [s]
                     parent = child.parent
@@ -75,6 +82,7 @@ class A_Star:
                         parent = parent.parent
                     global_map.show_map(global_map.print_map(the_map))
                     return result
+                """If a child is not in reached, it is placed in the frontier and its coordinates is added to reached. Fronier is sorted again"""
                 if s not in reached:
                     reached.append(s)
                     frontier.append(child)
@@ -83,6 +91,7 @@ class A_Star:
 
 
     def expand(self, node:Node, map):
+        """Function for finding the children to a given node."""
         result = []
         for child in node.get_children():
             next_node = Node(child[0], child[1], map.get_goal_pos(), node)
