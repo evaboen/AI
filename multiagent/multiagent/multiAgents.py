@@ -177,6 +177,17 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
+    """TODO: """
+    def maxValue(self, gameState, alpha, beta, currentIndex):
+        v = float('-inf')
+
+        return 0
+
+    """TODO:"""
+    def maxValue(self, gameState, alpha, beta):
+        v = float('inf')
+        return 0
+
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """
