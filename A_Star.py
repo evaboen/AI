@@ -4,9 +4,6 @@ global_map = Map.Map_Obj()
 the_map = global_map.read_map("./Samfundet_map_1.csv")
 
 class Node:
-    """
-    Class for each Tile in the map. Each has a position (x,y) and a pointer to its parent. Based on its parent each node gets a g value calculated.
-    """
     def __init__(self, x, y, goal, parent=None):
         self.pos = [x, y]
         self.parent = parent
@@ -20,7 +17,7 @@ class Node:
         return self.g
 
     def get_children(self):
-        """Function for finding the children to a node. Returns a list with all the nodes that is not a wall or the parent to the current node"""
+        """Function for finding the children to a node. Returns a list with all the nodes that is not a wall or the current nodes parent"""
         children = []
         children.append([self.pos[0] + 1, self.pos[1]])
         children.append([self.pos[0] - 1, self.pos[1]])
@@ -49,7 +46,7 @@ class A_Star:
         self.current_pos = self.map.get_start_pos()
 
     def heuristic(self, node):
-        """Calculates the weigth from a node to the goal. We are using the manhatten distance from a given node to the goal."""
+        """Calculates the weigth from a node to the goal"""
         goal = self.map.get_goal_pos()
         current_pos = node.pos
         return abs(goal[0] - current_pos[0]) + abs(goal[1] - current_pos[1])
@@ -72,7 +69,6 @@ class A_Star:
         while len(frontier) != 0:
             current_node = frontier.pop()
 
-
             for child in self.expand(current_node, map):
                 s = child.pos
                 """if child is the goal we add all the parents to the result until we reach the starting node. we then paint the result yellow"""
@@ -90,7 +86,7 @@ class A_Star:
                 if s not in reached:
                     reached.append(s)
                     frontier.append(child)
-                    frontier.sort(key=lambda x: self.f(x), reverse=True)
+                    frontier.sort(key=lambda x:self.f(x), reverse=True)
 
 
 
